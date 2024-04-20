@@ -1,48 +1,57 @@
-import { useEffect, useState } from 'react';
+// import { useMemo} from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import SearchBox from './components/SearchBox/SearchBox';
 import ContactList from './components/ContactList/ContactList';
-import ContactUsers from './contact.json';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
-  const [users, setUsers] = useState(() => {
-    const stringifiedUsers = localStorage.getItem('users');
-    if (!stringifiedUsers) return ContactUsers;
-    const parsedUsers = JSON.parse(stringifiedUsers);
-    return parsedUsers;
-  });
 
-  useEffect(() => {
-    localStorage.setItem('users', JSON.stringify(users));
-  }, [users]);
-
-  const onAddUser = formData => {
+  const dispatch = useDispatch();
+  const users = useSelector((state)=>state.contacts.items);
+  // const filter = useSelector((state)=>state.contacts.filters);
+  
+  const onAddUser = (formData) => {
     const finalUser = {
       ...formData,
       id: nanoid(),
     };
-    setUsers(prevState => [...prevState, finalUser]);
+    const action = {
+      type: 'contacts/add',
+      payload: finalUser,}
+    dispatch(action);
   };
-  const onDeleteUser = userId => {
-    setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-  };
-  const [filter, setFilter] = useState('');
 
-  const onChangeFilter = event => {
-    setFilter(event.target.value);
+  const onDeleteUser = (userId) => {
+    const action = {
+      type: 'contacts/delete',
+      payload: userId,}
+    dispatch(action);
   };
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(filter.toLowerCase()),
-  );
 
+  const onChangeFilter = (event) => {
+    const action = {
+      type: 'contacts/filter',
+      payload: event.target.value,}
+      dispatch(action);
+    }
+
+    // const filteredUsers = users.filter((user) =>
+    //   user.name.toLowerCase().includes(filter.toLowerCase())
+    // );
+    
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm onAddUser={onAddUser} />
-      <SearchBox onChangeFilter={onChangeFilter} filter={filter} />
-      <ContactList users={filteredUsers} onDeleteUser={onDeleteUser} />
-    </div>
+      <SearchBox 
+     onChangeFilter={onChangeFilter}
+      // filter={filter} 
+      />
+      <ContactList
+      //  users={filteredUsers} 
+       onDeleteUser={onDeleteUser} />
+      </div>
   );
 }
 
