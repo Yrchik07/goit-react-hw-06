@@ -1,7 +1,6 @@
 import css from '../Contact/Contact.module.css';
 
 function Contact({ user, onDeleteUser }) {
-  console.log('user: ', user);
   return (
     <>
       <li className={css.contactItemBox}>

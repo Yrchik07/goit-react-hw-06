@@ -37,7 +37,6 @@ const ContactFormSchema = yup.object().shape({
 
 const ContactForm = ({ onAddUser }) => {
   const handleSubmit = (value, actions) => {
-    console.log('value: ', value);
     onAddUser(value);
     actions.resetForm();
   };

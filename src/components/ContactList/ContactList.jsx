@@ -1,8 +1,6 @@
 import Contact from './Contact/Contact';
 import css from './ContactList.module.css';
 const ContactList = ({ users, onDeleteUser }) => {
-  console.log('onDeleteUser: ', onDeleteUser);
-  console.log('users: ', users);
   return (
     <ul className={css.contactList}>
       {Array.isArray(users) &&
