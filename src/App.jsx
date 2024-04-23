@@ -3,6 +3,8 @@ import SearchBox from './components/SearchBox/SearchBox';
 import ContactList from './components/ContactList/ContactList';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
+import { addContact,deleteContact } from './redux/contactsSlice';
+import { changeFilter } from './redux/filtersSlice';
 
 function App() {
 
@@ -11,31 +13,19 @@ function App() {
   const filter = useSelector(state => state.contacts.filters.name);
 
   const onAddUser = formData => {
-    const finalUser = {
+    const finalContact = {
       ...formData,
       id: nanoid(),
     };
-    const action = {
-      type: 'contacts/add',
-      payload: finalUser,
-    };
-    dispatch(action);
+    dispatch(addContact(finalContact));
   };
 
-  const onDeleteUser = userId => {
-    const action = {
-      type: 'contacts/delete',
-      payload: userId,
-    };
-    dispatch(action);
+  const onDeleteUser = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   const onChangeFilter = event => {
-    const action = {
-      type: 'contacts/filter',
-      payload: event.target.value,
-    };
-    dispatch(action);
+    dispatch(changeFilter(event.target.value));
   };
 
   const filteredUsers = users.filter((user) =>
@@ -44,7 +34,7 @@ function App() {
 
   return (
     <div>
-      <h1>Phonebook</h1>
+      <h1>Phonebooks</h1>
       <ContactForm onAddUser={onAddUser} />
       <SearchBox
        onChangeFilter={onChangeFilter}
