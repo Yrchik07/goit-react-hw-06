@@ -9,6 +9,9 @@ import {
 } from '../../utils/constant';
 
 import css from '../ContactForm/ContactForm.module.css';
+import { useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+import { addContacts } from '../../redux/contactsSlice';
 
 const ContactFormSchema = yup.object().shape({
   name: yup
@@ -35,9 +38,11 @@ const ContactFormSchema = yup.object().shape({
     ),
 });
 
-const ContactForm = ({ onAddUser }) => {
-  const handleSubmit = (value, actions) => {
-    onAddUser(value);
+export default function ContactForm() {
+  const dispatch = useDispatch();
+  const handleSubmit = (values, actions) => {
+    values.id = nanoid();
+    dispatch(addContacts(values));
     actions.resetForm();
   };
   return (
@@ -66,6 +71,5 @@ const ContactForm = ({ onAddUser }) => {
       </Form>
     </Formik>
   );
-};
+}
 
-export default ContactForm;

@@ -1,19 +1,25 @@
+import { useDispatch } from 'react-redux';
 import css from '../Contact/Contact.module.css';
+import { deleteContact } from '../../../redux/contactsSlice';
 
-function Contact({ user, onDeleteUser }) {
+export default function Contact({contact}) {
+  const dispatch = useDispatch();
+  const { id, name, number,  } = contact;
+
   return (
     <>
-      <li className={css.contactItemBox}>
+      <li className={css.contactItemBox} >
         <section className={css.contactItem}>
-          <p>👤 {user.name}</p>
-          <p>📞 {user.number}</p>
+          <p>👤 {name}</p>
+          <p>📞 {number}</p>
         </section>
         <section className={css.contactButtonDelete}>
           <button
             className={css.buttonDelete}
             type="button"
-            onClick={() => onDeleteUser(user.id)}
-          >
+            onClick={() => dispatch(deleteContact(id))}
+            id={id}
+              >
             Delete
           </button>
         </section>
@@ -22,4 +28,3 @@ function Contact({ user, onDeleteUser }) {
   );
 }
 
-export default Contact;
