@@ -14,10 +14,9 @@ export default function ContactList() {
   return (
     <ul className={css.contactList}>
       {Array.isArray(contactsData) &&
-        contactsData.map(contact => {
+        contactsData.map(contact => (
             <Contact key={contact.id} contact={contact}/>
-        })}
+        ))}
     </ul>
   );
 }
-{/* <li>hfghfhfhfh</li> */}
